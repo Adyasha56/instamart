@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign up — Instamart Clone</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;">
+    <div style="width:360px;background:var(--card);padding:26px;border-radius:12px;border:1px solid #e9eef6">
+      <h2 style="margin:0 0 8px 0">Create Account</h2>
+      <p style="margin:0 0 18px;color:var(--muted)">Sign up to place orders faster.</p>
+
+      <input id="name" placeholder="Full name"
+        style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:1px solid #e6e9ee" />
+      <input id="signupEmail" placeholder="Email"
+        style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:1px solid #e6e9ee" />
+      <input id="signupPass" type="password" placeholder="Password"
+        style="width:100%;padding:10px;margin-bottom:12px;border-radius:8px;border:1px solid #e6e9ee" />
+      <button class="btn" style="width:100%;margin-bottom:8px" onclick="submitSignup()">Create account</button>
+
+      <div style="text-align:center;color:var(--muted);font-size:14px">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function submitSignup() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const pass = document.getElementById('signupPass').value.trim();
+      if (!name || !email || !pass) { alert('Please fill all fields'); return; }
+      // demo: store user in localStorage (NOT secure — for demo only)
+      const user = { name, email };
+      localStorage.setItem('USER', JSON.stringify(user));
+      localStorage.setItem('IS_LOGGED_IN', '1');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+
+</html>

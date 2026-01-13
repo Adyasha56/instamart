@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Instamart</title>
+  <link rel="stylesheet" href="style.css" />
+
+
+</head>
+
+<body>
+  <header class="nav container">
+    <a class="brand" href="#">
+      <div class="logo">IM</div>
+      <div>
+        <div class="brand-title">Instamart</div>
+        <div class="brand-sub">Fresh groceries • Fast</div>
+      </div>
+    </a>
+
+    <div class="search-row">
+      <!-- ===== LOCATION POPUP TRIGGER ===== -->
+
+      <button class="add-location-btn" id="openLocationPopup"
+        style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+        <img src="/images/gps.png" style="width: 20px; height: 20px;" />
+        <div>Add your location</div>
+      </button>
+
+
+      <!-- ===== LOCATION POPUP ===== -->
+      <div class="location-popup" id="locationPopup">
+        <div class="popup-content">
+          <h3>Set your delivery location</h3>
+          <input type="text" id="locationInput" placeholder="Enter your area or address..." />
+          <button id="locateBtn">Detect My Location 📍</button>
+          <div class="popup-actions">
+            <button id="saveLocationBtn" class="save-btn">Save Location</button>
+            <button id="closePopupBtn" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+
+
+      <input id="search" class="search" placeholder="Search for fruits, snacks, essentials..." />
+      <button id="searchBtn" class="search-btn">Search</button>
+
+      <div class="sort">
+        <label for="sortSelect" style="font-size:13px;color:var(--muted)">Sort:</label>
+        <select id="sortSelect">
+          <option value="default">Default</option>
+          <option value="price-asc">Price — Low to High</option>
+          <option value="price-desc">Price — High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <button class="btn ghost"><a href="/login.html" style="text-decoration: none;">Login</a></button>
+      <button class="btn" id="openCartBtn">Cart (<span id="navCartCount">0</span>)</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Groceries delivered in <span class="highlight">10 minutes</span></h1>
+        <p>Fresh fruits, vegetables, dairy & daily essentials — delivered fast from local stores.</p>
+        <div style="margin-top:12px;display:flex;gap:10px">
+          <button class="btn" onclick="scrollToProducts()">Shop Now</button>
+          <button class="btn ghost" onclick="addStarterPack()">Add Starter Pack</button>
+        </div>
+      </div>
+      <div class="hero-right"><img src="images/groceries.jpg" alt="groceries" /></div>
+    </section>
+
+    <div class="controls">
+      <div class="categories" id="categories"></div>
+    </div>
+
+    <h2 class="section-title">Featured Products</h2>
+    <div id="products" class="products"></div>
+  </main>
+
+  <!-- CART SIDEBAR (single-page) -->
+  <div id="cartSidebar" class="cart-sidebar" style="display:none;">
+    <div class="cart-header"><strong>Your Cart</strong><button onclick="toggleCart(false)">✕</button></div>
+    <div id="cartList"></div>
+    <div id="cartTotal" style="font-weight:700;margin-top:8px">Total: ₹0</div>
+    <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
+  </div>
+
+  <!-- MODAL (product detail + checkout form) -->
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong id="modalTitle">Product</strong>
+        <button onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImg" src="" alt="product" />
+        <div class="modal-right">
+          <div id="modalDesc" style="color:var(--muted);margin-bottom:8px">Description</div>
+          <div style="font-weight:700;font-size:18px" id="modalPrice">₹0</div>
+          <div style="margin-top:12px">
+            <label>Quantity</label>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+              <button onclick="modalQty(-1)">-</button>
+              <div id="modalQty">1</div>
+              <button onclick="modalQty(1)">+</button>
+            </div>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:8px">
+            <button class="btn" onclick="modalAddToCart()">Add to cart</button>
+            <button class="btn ghost" onclick="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutBackdrop" class="modal-backdrop">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong>Checkout</strong>
+        <button onclick="closeCheckout()">✕</button>
+      </div>
+      <div>
+        <div class="form-row"><label>Name</label><input id="c_name" placeholder="Full name" /></div>
+        <div class="form-row"><label>Phone</label><input id="c_phone" placeholder="Phone number" /></div>
+        <div class="form-row"><label>Address</label><textarea id="c_address" rows="3"
+            placeholder="Delivery address"></textarea></div>
+        <div class="form-row"><label>Payment method</label><select id="c_payment">
+            <option>Pay on delivery</option>
+            <option>UPI</option>
+            <option>Card</option>
+          </select></div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" onclick="submitOrder()">Place
+            order</button><button class="btn ghost" onclick="closeCheckout()">Cancel</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- About -->
+      <div class="footer-section about">
+        <h3>Instamart</h3>
+        <p>Fresh groceries delivered fast to your doorstep.
+          Shop fruits, snacks, and essentials anytime.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div class="footer-section social">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+              alt="Facebook"></a>
+          <a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+              alt="Instagram"></a>
+          <a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg"
+              alt="Twitter"></a>
+          <a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"
+              alt="YouTube"></a>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-section newsletter">
+        <h4>Stay Updated</h4>
+        <p>Subscribe for latest offers and updates.</p>
+        <div class="newsletter-box">
+          <input type="email" placeholder="Enter your email" id="subscribeEmail" />
+          <button id="subscribeBtn">Subscribe</button>
+        </div>
+        <p id="subscribeMsg" class="subscribe-msg"></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 Instamart Clone
+    </div>
+  </footer>
+
+
+  <script src="/script.js"></script>
+</body>
+
+</html>
