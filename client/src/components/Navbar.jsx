@@ -1,3 +1,5 @@
+import Cart from "./Cart";
+
 export default function Navbar() {
   return (
     <header className="w-full bg-gray-50">
@@ -53,9 +55,9 @@ export default function Navbar() {
           <button className="bg-white px-4 py-2 rounded-lg text-sm">
             Login
           </button>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
-            Cart (3)
-          </button>
+          
+          {/* Cart Component with dynamic count */}
+          <Cart />
         </div>
 
       </div>
