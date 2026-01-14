@@ -2,6 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+
 
 dotenv.config();
 connectDB();
@@ -14,6 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/api/auth", authRoutes);
+app.use("/api/products",productRoutes);
+app.use("/api/category",categoryRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("Instamart server is running");
