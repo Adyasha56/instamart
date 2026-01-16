@@ -4,7 +4,7 @@ import {createProduct,getProducts,getProductsByCategory} from "../controllers/pr
 const router = express.Router();
 
 router.post("/", createProduct);
-router.post("/", getProducts);
-router.post("/category/:categoryId", getProductsByCategory);
+router.get("/", getProducts);
+router.get("/category/:categoryId", getProductsByCategory);
 
 export default router;
