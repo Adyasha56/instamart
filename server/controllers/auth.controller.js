@@ -24,11 +24,8 @@ export const signup = async (req, res) => {
       authProvider: "local",
     });
 
-    const token = generateToken(user._id);
-
     res.status(201).json({
       message: "Signup successful",
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -51,11 +48,11 @@ export const login = async (req, res) => {
     if (!user || user.authProvider !== "local")
       return res.status(401).json({ message: "Invalid credentials" });
 
-    const isMatch = await user.comparePassword(password);
+    const isMatch = await user.matchPassword(password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id,user.role);
 
     res.json({
       message: "Login successful",
@@ -64,6 +61,7 @@ export const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role
       },
     });
   } catch (error) {
