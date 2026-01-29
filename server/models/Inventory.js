@@ -45,5 +45,4 @@ const inventorySchema = new mongoose.Schema(
 // Ensuring that a product in a specific store has a unique inventory record
 inventorySchema.index({ store_id: 1, product_id: 1 }, { unique: true });
 
-const Inventory = mongoose.model("Inventory", inventorySchema);
-export default Inventory;
+export const Inventory = mongoose.model("Inventory", inventorySchema);

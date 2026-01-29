@@ -49,5 +49,4 @@ const storeSchema = new mongoose.Schema(
 storeSchema.index({ location: "2dsphere" });
 storeSchema.index({ service_area: "2dsphere" });
 
-const Store = mongoose.model("Store", storeSchema);
-export default Store;
+export const Store = mongoose.model("Store", storeSchema);

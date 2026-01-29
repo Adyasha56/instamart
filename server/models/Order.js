@@ -80,4 +80,3 @@ const orderSchema = new mongoose.Schema(
 orderSchema.index({ order_status: 1 });
 
 export const Order = mongoose.model("Order", orderSchema);
-export default Order;
