@@ -1,17 +1,21 @@
 import User from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
-import bcrypt from "bcrypt";
 import { OAuth2Client } from "google-auth-library";
+import { Responses } from "../utils/response.js";
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 //normal signup
 export const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields required" });
+
+    if(role.toLowerCase() === "admin"){
+      return Responses.failResponse(res,"User with admin role can not be created",403);
+    }
 
     const userExists = await User.findOne({ email });
     if (userExists)
@@ -22,6 +26,7 @@ export const signup = async (req, res) => {
       email,
       password,
       authProvider: "local",
+      role: role
     });
 
     res.status(201).json({
@@ -30,6 +35,7 @@ export const signup = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role
       },
     });
   } catch (error) {
