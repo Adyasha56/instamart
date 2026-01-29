@@ -4,39 +4,63 @@ const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Product name is required"],
       trim: true,
+      index: true,
     },
-
+    brand: {
+      type: String,
+      required: [true, "Brand name is required"],
+      trim: true,
+      index: true,
+    },
     description: {
       type: String,
+      required: [true, "Description is required"],
+      trim: true,
     },
-
     price: {
       type: Number,
-      required: true,
+      required: [true, "Price is required"],
+      min: [0, "Price cannot be negative"],
     },
-
-    unit: {
-      type: String, // 1kg, 1L, 200g
-      required: true,
-    },
-
-    image: {
+    uom: {
       type: String,
+      required: [true, "Unit of Measure (UOM) is required"],
+      trim: true,
     },
-
+    images: {
+      type: [String],
+      validate: {
+        validator: function (v) {
+          return v && v.length > 0;
+        },
+        message: "At least one product image is required",
+      },
+    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: true,
+      required: [true, "Category is required"],
+      index: true,
     },
-
-    stock: {
+    inventory: {
       type: Number,
+      required: [true, "Inventory level is required"],
+      min: [0, "Inventory cannot be negative"],
       default: 0,
     },
-
+    tags: {
+      type: [String],
+      index: true,
+    },
+    barcode: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      index: true,
+    },
     isAvailable: {
       type: Boolean,
       default: true,
@@ -45,4 +69,6 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Product", productSchema);
+productSchema.index({ name: "text", brand: "text", tags: "text" });
+
+export const Product = mongoose.model("Product", productSchema);
