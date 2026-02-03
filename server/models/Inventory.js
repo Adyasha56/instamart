@@ -29,12 +29,6 @@ const inventorySchema = new mongoose.Schema(
             min: [0, "Discount percentage cannot be less than 0"],
             max: [100, "Discount percentage cannot exceed 100"],
             default: 0
-        },
-        inventory: {
-            type: Number,
-            required: [true, "Inventory level is required"],
-            min: [0, "Inventory level cannot be negative"],
-            default: 0
         }
     },
     {

@@ -44,12 +44,6 @@ const productSchema = new mongoose.Schema(
       required: [true, "Category is required"],
       index: true,
     },
-    inventory: {
-      type: Number,
-      required: [true, "Inventory level is required"],
-      min: [0, "Inventory cannot be negative"],
-      default: 0,
-    },
     tags: {
       type: [String],
       index: true,
