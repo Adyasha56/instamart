@@ -14,13 +14,13 @@ const router = express.Router();
 router.post("/", authMiddleware, authorize("admin"), createProduct);
 
 // Get all products grouped by category with pagination (Admin only)
-router.get("/", authMiddleware, authorize("admin"), getProducts);
+router.get("/", getProducts);
 
 // Get products by category ID (Admin only)
-router.get("/:categoryId", authMiddleware, authorize("admin"), getProductsByCategory);
+router.get("/:categoryId", getProductsByCategory);
 
 // Get specific product details by product ID (Admin only)
-router.get("/specific/:productId", authMiddleware, authorize("admin"), getSpecificProduct);
+router.get("/specific/:productId", getSpecificProduct);
 
 // Update a product by product ID (Admin only)
 router.put("/:productId", authMiddleware, authorize("admin"), updateProduct);
