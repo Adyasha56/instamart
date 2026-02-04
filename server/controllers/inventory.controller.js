@@ -330,6 +330,13 @@ export const getStoreInventory = async (req, res) => {
 
     const query = { store_id: storeId };
 
+    // Filter by category if provided
+    if (category && mongoose.Types.ObjectId.isValid(category)) {
+      const productsInCategory = await Product.find({ category }).select("_id");
+      const productIds = productsInCategory.map(p => p._id);
+      query.product_id = { $in: productIds };
+    }
+
     // Filter by stock availability
     if (inStockOnly === "true") {
       query.stock = { $gt: 0 };
@@ -342,7 +349,7 @@ export const getStoreInventory = async (req, res) => {
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
-    let inventoryQuery = Inventory.find(query)
+    const inventory = await Inventory.find(query)
       .populate({
         path: "product_id",
         select: "name brand description price images category tags isAvailable",
@@ -355,12 +362,6 @@ export const getStoreInventory = async (req, res) => {
       .limit(parseInt(limit))
       .lean();
 
-    // Filter by category if provided
-    if (category && mongoose.Types.ObjectId.isValid(category)) {
-      inventoryQuery = inventoryQuery.where("product_id.category").equals(category);
-    }
-
-    const inventory = await inventoryQuery;
     const total = await Inventory.countDocuments(query);
 
     // Calculate final price with discount
