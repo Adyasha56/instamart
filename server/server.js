@@ -4,6 +4,8 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
+import addressRoutes from "./routes/address.routes.js";
+import inventoryRoutes from "./routes/inventory.routes.js";
 
 
 dotenv.config();
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/products",productRoutes);
 app.use("/api/category",categoryRoutes);
+app.use("/api/address", addressRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
 
 app.get("/", (req, res) => {
