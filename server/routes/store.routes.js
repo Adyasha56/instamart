@@ -7,7 +7,7 @@ import {
   getNearestStore,
   checkServiceability
 } from "../controllers/store.controller.js";
-import { authMiddleware, authorize } from "../middleware/authMiddleware.js";
+import { authMiddleware, authorize } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
