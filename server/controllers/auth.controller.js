@@ -115,3 +115,38 @@ export const googleAuth = async (req, res) => {
     res.status(401).json({ message: "Google authentication failed" });
   }
 };
+
+//logout user
+export const logoutUser = async (req, res) => {
+  try {
+    // Clear session/token on client side
+    // Token validation is handled on client via removal
+    res.json({
+      message: "Logout successful",
+      success: true
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//get current user
+export const getCurrentUser = async (req, res) => {
+  try {
+    // User info comes from authMiddleware which populates req.user
+    const user = req.user;
+    
+    res.json({
+      message: "User profile retrieved",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
