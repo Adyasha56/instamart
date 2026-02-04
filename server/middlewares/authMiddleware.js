@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import User from "../models/User.js";
+import { User } from "../models/User.js";
 import { Responses } from "../utils/response.js";
 import jwt from "jsonwebtoken";
 

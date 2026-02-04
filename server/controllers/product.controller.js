@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Product } from "../models/Product.js";
-import { Responses } from "../utils/Responses.js";
+import { Responses } from "../utils/response.js";
 
 /**
  * Creates a new product
