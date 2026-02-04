@@ -9,6 +9,7 @@ import inventoryRoutes from "./routes/inventory.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import storeRoutes from "./routes/store.routes.js"
 import cartRoutes from "./routes/cart.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/api/inventory", inventoryRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/store", storeRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/user", userRoutes);
 
 
 app.get("/", (req, res) => {
