@@ -8,9 +8,9 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 //normal signup
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, phone } = req.body;
 
-    if (!name || !email || !password)
+    if (!name || !email || !password || !role || !phone)
       return res.status(400).json({ message: "All fields required" });
 
     if(role.toLowerCase() === "admin"){
@@ -26,7 +26,8 @@ export const signup = async (req, res) => {
       email,
       password,
       authProvider: "local",
-      role: role
+      role: role,
+      phone: phone
     });
 
     res.status(201).json({
@@ -35,7 +36,8 @@ export const signup = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        phone: user.phone
       },
     });
   } catch (error) {

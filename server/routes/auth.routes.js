@@ -18,7 +18,7 @@ router.post("/login", login);
 router.post("/google", googleAuth);
 
 // Logout
-router.post("/logout", logoutUser);
+router.post("/logout", authMiddleware, logoutUser);
 
 // Get current user (protected route)
 router.get("/me", authMiddleware, getCurrentUser);
