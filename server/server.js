@@ -7,6 +7,7 @@ import categoryRoutes from "./routes/category.routes.js";
 import addressRoutes from "./routes/address.routes.js";
 import inventoryRoutes from "./routes/inventory.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import storeRoutes from "./routes/store.routes.js"
 
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/api/category",categoryRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/store", storeRoutes);
 
 
 app.get("/", (req, res) => {
