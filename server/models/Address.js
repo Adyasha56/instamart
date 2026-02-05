@@ -17,10 +17,10 @@ const addressSchema = new mongoose.Schema(
         tag: {
             type: String,
             enum: {
-                values: ["Home", "Work", "Other"],
+                values: ["home", "work", "other"],
                 message: "Address tag must be one of: Home, Work, or Other",
             },
-            default: "Home",
+            default: "home",
             trim: true,
             lowercase: true,
         },
@@ -133,8 +133,8 @@ addressSchema.index({ user_id: 1, is_default: 1 });
 addressSchema.index({ pincode: 1, city: 1 });
 
 // Pre-save middleware to ensure data consistency
-addressSchema.pre("save", function(next) {
-    // Normalize city and state to title case
+addressSchema.pre("save", async function() {
+    // Normalize city and state to lowercase
     if (this.city) {
         this.city = this.city.toLowerCase().trim();
     }
@@ -145,7 +145,6 @@ addressSchema.pre("save", function(next) {
     if (this.tag) {
         this.tag = this.tag.toLowerCase();
     }
-    next();
 });
 
 export const Address = mongoose.model("Address", addressSchema);

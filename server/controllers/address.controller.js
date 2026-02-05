@@ -201,14 +201,14 @@ const checkServiceability = async (coordinates) => {
     const serviceableStore = await Store.findOne({
       is_active: true,
       service_area: {
-        $geoWithin: {
+        $geoIntersects: {
           $geometry: {
             type: "Point",
             coordinates: coordinates
           }
         }
       }
-    }).select("_id").lean();
+    });
     
     return {
       serviceable: !!serviceableStore,
@@ -334,6 +334,7 @@ export const createAddress = async (req, res) => {
 
     return Responses.successResponse(res, "Address created successfully", 201, newAddress);
   } catch (error) {
+    console.log(error);
     console.error("Create address error:", error.message);
     const errorInfo = handleValidationError(error);
     return Responses.failResponse(res, errorInfo.message, errorInfo.statusCode);
