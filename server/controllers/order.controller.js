@@ -149,7 +149,7 @@ export const trackOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    const order = await Order.findById(orderId).select("order_status payment_status createdAt updatedAt");
+    const order = await Order.findById(orderId).select("order_status payment_status createdAt updatedAt user_id");
 
     if (!order) {
       return Responses.failResponse(res, "Order not found", 404);
